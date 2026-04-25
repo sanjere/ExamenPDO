@@ -1,25 +1,43 @@
 <?php
-require_once "Config/conexion.php";
-require_once "models/cosultas.php"; 
-require_once "Controllers/Usuariocontroller.php";
+// Estudiante: [Jeremy santiago osuna martinez]
 
-$controlador = new Usuariocontroller();
-$lista = $controlador->mostrarUsuarios();
+spl_autoload_register(function ($clase) {
+    $ruta = str_replace(['App\\', '\\'], ['', '/'], $clase) . '.php';
+    if (file_exists($ruta)) {
+        require_once $ruta;
+    }
+});
+
+use App\Controllers\UsuarioController;
+
+try {
+    $controlador = new UsuarioController();
+    $lista = $controlador->mostrarUsuarios();
+} catch (Exception $e) {
+    $error = $e->getMessage();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tarea PDO Estudiante</title>
+    <title>Examen PDO</title>
     <style>
-        table { border-collapse: collapse; width: 50%; margin-top: 20px; }
-        th, td { padding: 10px; text-align: left; border: 1px solid #ddd; }
-        th { background-color: #f2f2f2; }
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        table { border-collapse: collapse; width: 70%; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: left; }
+        th { background-color: #eee; }
+        .error-msg { color: red; }
     </style>
 </head>
 <body>
+
     <h1>Lista de Usuarios Registrados</h1>
+
+    <?php if (isset($error)): ?>
+        <p class="error-msg">Error: <?php echo $error; ?></p>
+    <?php endif; ?>
     
     <table>
         <thead>
@@ -30,7 +48,7 @@ $lista = $controlador->mostrarUsuarios();
             </tr>
         </thead>
         <tbody>
-            <?php if (isset($lista) && is_array($lista)): ?>
+            <?php if (!empty($lista)): ?>
                 <?php foreach($lista as $u): ?>
                 <tr>
                     <td><?php echo $u['id']; ?></td>
@@ -40,10 +58,11 @@ $lista = $controlador->mostrarUsuarios();
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="3">No hay datos disponibles.</td>
+                    <td colspan="3">No se encontraron datos en la tabla.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
     </table>
+
 </body>
 </html>
