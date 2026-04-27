@@ -1,4 +1,7 @@
 <?php
+
+// jeremy santiago osuna martinez
+
 require_once dirname(__DIR__) . '/Config/Database.php';
 require_once dirname(__DIR__) . '/Models/Producto.php';
 
