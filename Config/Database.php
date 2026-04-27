@@ -1,4 +1,7 @@
 <?php
+
+// jeremy santiago osuna martinez
+
 class Database {
     private $host = "localhost";
     private $dbname = "ExamenPDO";
